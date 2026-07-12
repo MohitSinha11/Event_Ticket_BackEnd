@@ -92,8 +92,6 @@ public class EventController {
         return ResponseEntity.noContent().build();
     }
 
-
-
     private UUID parseUserId(Jwt jwt) {
 
         return UUID.fromString(jwt.getSubject());

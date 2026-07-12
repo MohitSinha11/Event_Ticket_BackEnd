@@ -3,10 +3,7 @@ package com.example.tickets.services.impl;
 import com.example.tickets.domain.CreateEventRequest;
 import com.example.tickets.domain.UpdateEventRequest;
 import com.example.tickets.domain.UpdateTicketTypeRequest;
-import com.example.tickets.domain.entities.Event;
-import com.example.tickets.domain.entities.Ticket;
-import com.example.tickets.domain.entities.TicketType;
-import com.example.tickets.domain.entities.User;
+import com.example.tickets.domain.entities.*;
 import com.example.tickets.exceptions.EventNotFoundException;
 import com.example.tickets.exceptions.EventUpdateException;
 import com.example.tickets.exceptions.TicketTypeNotFoundException;
@@ -146,5 +143,10 @@ public class EventServiceImpl implements EventService {
     public void deleteEventForOrganizer(UUID organizerId, UUID id) {
         getEventForOrganizer(organizerId, id)
                 .ifPresent(eventRepository::delete);
+    }
+
+    @Override
+    public Page<Event> listPublishedEvents(Pageable pageable) {
+        return eventRepository.findByStatus(EventStatusEnum.PUBLISHED, pageable);
     }
 }
