@@ -1,7 +1,7 @@
 package com.example.tickets.controllers;
 
 import com.example.tickets.domain.dtos.ErrorDto;
-import com.example.tickets.exceptions.UserNotFoundException;
+import com.example.tickets.exceptions.*;
 import jakarta.validation.ConstraintViolationException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -14,14 +14,39 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import javax.naming.Binding;
 import java.util.List;
+import java.util.Map;
 
 @RestControllerAdvice
 @Slf4j
 public class GlobalExceptionHandler {
 
+    @ExceptionHandler(EventUpdateException.class)
+    public ResponseEntity<ErrorDto> handleEventUpdateException(EventUpdateException ex){
+        log.error("Caught EventUpdateException", ex);
+        ErrorDto errorDto = new ErrorDto();
+        errorDto.setError("Unable to update event");
+        return new ResponseEntity<>(errorDto, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(TicketTypeNotFoundException.class)
+    public ResponseEntity<ErrorDto> handleTicketTypeNotFoundException(TicketTypeNotFoundException ex){
+        log.error("Caught TicketTypeNotFoundException", ex);
+        ErrorDto errorDto = new ErrorDto();
+        errorDto.setError("Ticket Type not found");
+        return new ResponseEntity<>(errorDto, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(EventNotFoundException.class)
+    public ResponseEntity<ErrorDto> handleEventNotFoundException(EventNotFoundException ex){
+        log.error("Caught EventNotFoundException", ex);
+        ErrorDto errorDto = new ErrorDto();
+        errorDto.setError("Event not found");
+        return new ResponseEntity<>(errorDto, HttpStatus.BAD_REQUEST);
+    }
+
     @ExceptionHandler(UserNotFoundException.class)
     public ResponseEntity<ErrorDto> handleUserNotFoundException(UserNotFoundException ex){
-        log.error("Caught Exception", ex);
+        log.error("Caught UserNotFoundException", ex);
         ErrorDto errorDto = new ErrorDto();
         errorDto.setError("User not found");
         return new ResponseEntity<>(errorDto, HttpStatus.BAD_REQUEST);
@@ -29,7 +54,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ErrorDto> handleMethodArgumentNotValidException(MethodArgumentNotValidException ex){
-        log.error("Caught Method Argument Not Valid Exception", ex);
+        log.error("Caught MethodArgumentNotValidException", ex);
         ErrorDto errorDto = new ErrorDto();
 
         BindingResult bindingResult = ex.getBindingResult();
@@ -47,7 +72,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(ConstraintViolationException.class)
     public ResponseEntity<ErrorDto> handleConstraintViolationException(ConstraintViolationException ex){
-        log.error("Caught Constraint Violation  Exception", ex);
+        log.error("Caught ConstraintViolationException", ex);
         ErrorDto errorDto = new ErrorDto();
 
         String errorMessage = ex.getConstraintViolations()
