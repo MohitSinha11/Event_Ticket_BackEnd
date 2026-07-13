@@ -20,7 +20,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(authorize ->
                         authorize
                                 //Auth not req for this end point
-                                .requestMatchers(HttpMethod.GET,"/api/v1/published-events").permitAll()
+                                .requestMatchers(HttpMethod.GET,"/api/v1/published-events/**").permitAll()
                                 //Rest all need to be authenticated
                                 .anyRequest().authenticated())
                 .csrf(csrf ->  csrf.disable())
