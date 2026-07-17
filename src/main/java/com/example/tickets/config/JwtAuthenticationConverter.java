@@ -29,6 +29,7 @@ public class JwtAuthenticationConverter implements Converter<Jwt , JwtAuthentica
             return Collections.emptyList();
         }
 
+        @SuppressWarnings("unchecked")
         List<String> roles = (List<String>)realmAccess.get("roles");
 
         return roles.stream().filter(role -> role.startsWith("ROLE_"))
