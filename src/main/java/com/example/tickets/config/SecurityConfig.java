@@ -23,6 +23,7 @@ public class SecurityConfig {
                                 //Auth not req for this end point
                                 .requestMatchers(HttpMethod.GET,"/api/v1/published-events/**").permitAll()
                                 .requestMatchers("/api/v1/events").hasRole("ORGANIZER")
+                                .requestMatchers("/api/v1/ticket-validations").hasRole("STAFF")
                                 //Rest all need to be authenticated
                                 .anyRequest().authenticated())
                 .csrf(csrf ->  csrf.disable())
